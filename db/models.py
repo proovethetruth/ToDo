@@ -1,6 +1,6 @@
 
 from db.database import Base
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String
 
 class ToDo(Base):
     __tablename__ = 'Tasks'

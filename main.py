@@ -1,14 +1,36 @@
 
 from db import models
-from db.database import engine
-from fastapi import FastAPI
-import task
+from db import db_todo
+from db.database import engine, get_db
+from sqlalchemy.orm import Session
+from fastapi import FastAPI, Depends
+from schemas import TaskModel
+from typing import List
 
 app = FastAPI(title="ToDo API")
-app.include_router(task.router)
 
 models.Base.metadata.create_all(engine)
 
-@app.get('/')
-def main_page():
-    return {"HELLO":"THERE"}
+@app.get('/', response_model=List[TaskModel], tags=['Database operations'], summary='List Tasks')
+def get_all_tasks(db: Session = Depends(get_db)):
+    return db_todo.get_all_tasks(db)
+
+
+@app.get('/tomorrow', response_model=List[TaskModel], tags=['Database operations'], summary='List Tasks on Tomorrow')
+def get_all_tasks(db: Session = Depends(get_db)):
+    return db_todo.get_tomorrow_tasks(db)
+
+
+@app.post('/create_task', tags=['Database operations'], summary='Create Task')
+def create_task(request: TaskModel, db: Session = Depends(get_db)):
+    return db_todo.add_task(db, request)
+
+
+@app.put('/update/{id}', tags=['Database operations'], summary='Update Task')
+def update_task(id: int, request: TaskModel, db: Session = Depends(get_db)):
+    return db_todo.update_task(db, id, request)
+
+
+@app.delete('/delete/{id}', tags=['Database operations'], summary='Delete Task')
+def update_task(id: int, request: TaskModel, db: Session = Depends(get_db)):
+    return db_todo.delete_task(db, id, request)
