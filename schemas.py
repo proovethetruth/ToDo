@@ -2,6 +2,6 @@
 from pydantic import BaseModel
 
 class TaskModel(BaseModel):
-    header: str
-    due_date: str
+    title: str
     description: str
+    due_to: str

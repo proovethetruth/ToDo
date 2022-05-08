@@ -11,5 +11,7 @@ router = APIRouter(
 
 # Create Task
 @router.post('/')
-def create_task(request: TaskModel, db: Session = Depends(get_db())):
+def create_task(request: TaskModel, db: Session = Depends(get_db)):
     return db_todo.add_task(db, request)
+
+# Get all the elements

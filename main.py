@@ -8,3 +8,7 @@ app = FastAPI(title="ToDo API")
 app.include_router(task.router)
 
 models.Base.metadata.create_all(engine)
+
+@app.get('/')
+def main_page():
+    return {"HELLO":"THERE"}
