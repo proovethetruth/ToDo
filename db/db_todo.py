@@ -19,6 +19,10 @@ def add_task(db: Session, request: TaskModel):
 
 
 def get_all_tasks(db: Session):
+    return db.query(ToDo).all()
+
+
+def get_all_tasks_by_date(db: Session):
     return db.query(ToDo).order_by(ToDo.due_to).all()
 
     
@@ -38,7 +42,7 @@ def update_task(db: Session, id: int, request: TaskModel):
         ToDo.due_to: request.due_to
     })
     db.commit()
-    return {"{request.title} task" : "updated to {ToDo.title}"}
+    return {"{request.title} task" : "has been updated"}
 
 
 def delete_task(db: Session, id: int, request: TaskModel):
