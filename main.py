@@ -12,7 +12,7 @@ app = FastAPI(title="ToDo API")
 models.Base.metadata.create_all(engine)
 
 
-@app.get('/', response_model=List[TaskModel], tags=['Display Tasks'], summary='List Tasks by ID')
+@app.get('/', response_model=List[TaskModel], tags=['Display Tasks'], summary='List Tasks by ID in reverse order')
 def get_all_tasks(db: Session = Depends(get_db)):
     return db_todo.get_all_tasks(db)
 
@@ -20,6 +20,11 @@ def get_all_tasks(db: Session = Depends(get_db)):
 @app.get('/by_date', response_model=List[TaskModel], tags=['Display Tasks'], summary='List Tasks by Date')
 def get_all_tasks_by_date(db: Session = Depends(get_db)):
     return db_todo.get_all_tasks_by_date(db)
+
+
+@app.get('/expired', response_model=List[TaskModel], tags=['Display Tasks'], summary='List Tasks with expired Date')
+def get_all_tasks_by_date(db: Session = Depends(get_db)):
+    return db_todo.get_all_tasks_by_expired_date(db)
 
 
 @app.get('/today', response_model=List[TaskModel], tags=['Display Tasks'], summary='List Tasks for Today')

@@ -19,11 +19,15 @@ def add_task(db: Session, request: TaskModel):
 
 
 def get_all_tasks(db: Session):
-    return db.query(ToDo).all()
+    return db.query(ToDo).order_by(desc(ToDo.id)).all()
 
 
 def get_all_tasks_by_date(db: Session):
     return db.query(ToDo).order_by(ToDo.due_to).all()
+
+
+def get_all_tasks_by_expired_date(db: Session):
+    return db.query(ToDo).filter(ToDo.due_to < datetime.date.today()).all()
 
     
 def get_today_tasks(db: Session):
