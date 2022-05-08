@@ -11,13 +11,18 @@ app = FastAPI(title="ToDo API")
 
 models.Base.metadata.create_all(engine)
 
-@app.get('/', response_model=List[TaskModel], tags=['Database operations'], summary='List Tasks')
+@app.get('/', response_model=List[TaskModel], tags=['Display Tasks'], summary='List Tasks')
 def get_all_tasks(db: Session = Depends(get_db)):
     return db_todo.get_all_tasks(db)
 
 
-@app.get('/tomorrow', response_model=List[TaskModel], tags=['Database operations'], summary='List Tasks on Tomorrow')
-def get_all_tasks(db: Session = Depends(get_db)):
+@app.get('/today', response_model=List[TaskModel], tags=['Display Tasks'], summary='List Tasks for Today')
+def get_today_tasks(db: Session = Depends(get_db)):
+    return db_todo.get_today_tasks(db)
+
+
+@app.get('/tomorrow', response_model=List[TaskModel], tags=['Display Tasks'], summary='List Tasks for Tomorrow')
+def get_tomorrow_tasks(db: Session = Depends(get_db)):
     return db_todo.get_tomorrow_tasks(db)
 
 
